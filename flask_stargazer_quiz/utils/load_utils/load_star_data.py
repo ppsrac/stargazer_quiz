@@ -33,13 +33,10 @@ def trans_loc_data(loc_data: pd.DataFrame) -> np.array:
 
     # generate retrieve array with column ['rarad', 'decrad', 'mag']
     ret_array = np.zeros(shape=(num_row, 3), dtype=np.float64)
-    ret_array[:, 2] = 999.0
+    ret_array[:, 2] = 999.0  # To ignore invalid row (such as index 0)
 
     # fil the data from loc_array
-    for data in loc_array:
-        idx = int(data[0])
-        ret_data = data[1:]
-        ret_array[idx] = ret_data
+    ret_array[loc_array[:, 0]] = loc_array[:, 1:]
 
     # return the retrieve array
     return ret_array
