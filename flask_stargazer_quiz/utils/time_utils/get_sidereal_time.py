@@ -3,12 +3,13 @@ from datetime import datetime
 from math import pi
 from typing import Optional
 
-
-#TODO: delete dependency of astropy.time
+# TODO: delete dependency of astropy.time
 """
 Can obtain the Julian day from datetime without astropy.time.
 See https://stackoverflow.com/questions/33964461/handling-julian-days-in-c11-14.
 """
+
+
 def get_sidereal_time(longi: float, timeinfo: Optional[tuple] = None) -> float:
     """
     Returns the sidereal time(as a radian) of the desired location at a specific time

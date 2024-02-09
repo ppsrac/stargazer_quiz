@@ -4,7 +4,7 @@ import numpy as np
 
 def load_star_data(path: str) -> tuple:
     """
-    split the
+    split the star data into (loc_data, info_data)
     :param path: location of star csv file.
     :return: tuple of loc_data and info_data
     """
@@ -26,17 +26,18 @@ def trans_loc_data(loc_data: pd.DataFrame) -> np.array:
     :return: transformed np array of loc_data
     """
     # convert loc_data into np arrays.
-    loc_array = loc_data.values
+    idx_array = loc_data['id']
+    loc_array = loc_data.values[:, 1:]
 
     # estimate size of the retrieve array.
-    num_row = int(np.max(loc_array[:, 0])) + 1
+    num_row = int(np.max(idx_array)) + 1
 
     # generate retrieve array with column ['rarad', 'decrad', 'mag']
     ret_array = np.zeros(shape=(num_row, 3), dtype=np.float64)
     ret_array[:, 2] = 999.0  # To ignore invalid row (such as index 0)
 
-    # fil the data from loc_array
-    ret_array[loc_array[:, 0]] = loc_array[:, 1:]
+    # fill the data from loc_array
+    ret_array[idx_array] = loc_array
 
     # return the retrieve array
     return ret_array
