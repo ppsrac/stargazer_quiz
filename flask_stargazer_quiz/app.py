@@ -1,6 +1,18 @@
 from flask import Flask
+from utils.load_utils.load_star_data import load_star_data, trans_loc_data
+from utils.time_utils.get_sidereal_time import get_sidereal_time
 
-app = Flask(__name__)
+
+# Init method.
+# When the Flask app is first executed, initialize the internal data structures.
+
+class StarGazerApp(Flask):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print("Custom Hello")
+
+
+app = StarGazerApp(__name__)
 
 
 @app.route('/')
