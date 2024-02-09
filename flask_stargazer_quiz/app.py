@@ -1,6 +1,17 @@
 from flask import Flask
 
-app = Flask(__name__)
+StarData = []
+
+# Init method.
+# When the Flask app is first executed, initialize the internal data structures.
+
+class StarGazerApp(Flask):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print("Custom Hello")
+
+
+app = StarGazerApp(__name__)
 
 
 @app.route('/')
