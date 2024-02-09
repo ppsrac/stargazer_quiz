@@ -29,12 +29,11 @@ def trans_loc_data(loc_data: pd.DataFrame) -> np.array:
     loc_array = loc_data.values
 
     # estimate size of the retrieve array.
-    colnum = int(np.max(loc_array[:, 0])) + 1
+    num_row = int(np.max(loc_array[:, 0])) + 1
 
-    # generate retrieve array
-    ret_array = np.zeros(shape=(colnum, 3), dtype=np.float64)
-    for i in range(colnum):
-        ret_array[i][2] = 999.0
+    # generate retrieve array with column ['rarad', 'decrad', 'mag']
+    ret_array = np.zeros(shape=(num_row, 3), dtype=np.float64)
+    ret_array[:, 2] = 999.0
 
     # fil the data from loc_array
     for data in loc_array:
