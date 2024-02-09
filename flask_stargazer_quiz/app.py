@@ -1,6 +1,7 @@
 from flask import Flask
+from utils.load_utils.load_star_data import load_star_data, trans_loc_data
+from utils.time_utils.get_sidereal_time import get_sidereal_time
 
-StarData = []
 
 # Init method.
 # When the Flask app is first executed, initialize the internal data structures.
