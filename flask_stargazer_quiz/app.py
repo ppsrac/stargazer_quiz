@@ -1,7 +1,9 @@
-from flask import Flask
+from flask import Flask, request, render_template
 import time
 from utils.load_utils.load_star_data import load_star_data, trans_loc_data
 from utils.time_utils.get_sidereal_time import get_sidereal_time
+from utils.draw_utils.generate_star_image import generate_star_image
+
 
 # data file path
 data_path = 'data/hyg_v37.csv'
@@ -22,6 +24,18 @@ class StarGazerApp(Flask):
 
 
 app = StarGazerApp(__name__)
+
+
+@app.route('/draw', methods=['GET'])
+def default_star_map():
+    if request.method == 'GET':
+        img_path, html_img_path = 'static/test.png', '../static/test.png'
+
+        # generate star image
+        generate_star_image(img_path, None)
+
+        return render_template('draw_image.html', path=html_img_path)
+
 
 
 @app.route('/')
