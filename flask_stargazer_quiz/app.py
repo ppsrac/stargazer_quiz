@@ -1,8 +1,15 @@
 from flask import Flask, request, render_template
+import time
 from utils.load_utils.load_star_data import load_star_data, trans_loc_data
 from utils.time_utils.get_sidereal_time import get_sidereal_time
 from utils.draw_utils.generate_star_image import generate_star_image
 
+
+# data file path
+data_path = 'data/hyg_v37.csv'
+
+star_loc_data = None
+star_info_data = None
 
 
 # Init method.
@@ -10,8 +17,10 @@ from utils.draw_utils.generate_star_image import generate_star_image
 
 class StarGazerApp(Flask):
     def __init__(self, *args, **kwargs):
+        global star_loc_data, star_info_data
         super().__init__(*args, **kwargs)
-        print("Flask initialization finished")
+        loc_data, star_info_data = load_star_data(data_path)
+        star_loc_data = trans_loc_data(loc_data)
 
 
 app = StarGazerApp(__name__)
