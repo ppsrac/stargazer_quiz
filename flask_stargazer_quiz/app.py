@@ -18,7 +18,7 @@ app = StarGazerApp(__name__)
 
 
 @app.route('/draw', methods=['GET'])
-def draw_blank():
+def default_star_map():
     if request.method == 'GET':
         img_path, html_img_path = 'static/test.png', '../static/test.png'
 
