@@ -2,6 +2,8 @@ from flask import Flask, request, render_template
 import time
 from utils.load_utils.load_star_data import load_star_data, trans_loc_data
 from utils.time_utils.get_sidereal_time import get_sidereal_time
+from utils.calc_utils.trans_spheric2ortho import convert_star
+from utils.calc_utils.remove_rows_by_criteria import remove_rows_by_criteria
 from utils.draw_utils.generate_star_image import generate_star_image
 
 
@@ -29,10 +31,17 @@ app = StarGazerApp(__name__)
 @app.route('/draw', methods=['GET'])
 def default_star_map():
     if request.method == 'GET':
-        img_path, html_img_path = 'static/test.png', '../static/test.png'
+        img_path, html_img_path = 'static/test.png', '../static/test.png' # absolute path does not work.
+        """
+        See https://stackoverflow.com/questions/5157772/src-absolute-path-problem
+        """
+
+        # get the data source from
+        ortho_star_data = convert_star(star_loc_data)
+        filtered_star_data = remove_rows_by_criteria(ortho_star_data)
 
         # generate star image
-        generate_star_image(img_path, None)
+        generate_star_image(img_path, filtered_star_data)
 
         return render_template('draw_image.html', path=html_img_path)
 
@@ -44,4 +53,4 @@ def hello_world():  # put application's code here
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=8000, debug=True)
