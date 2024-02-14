@@ -3,7 +3,8 @@ from typing import Callable
 from PIL import Image, ImageDraw
 
 
-def generate_star_image(path: str, star_data: np.array, size: tuple[int, int] = (1000, 1000),
+def generate_star_image(path: str, star_data: np.array, const_line_data: np.array,
+                        size: tuple[int, int] = (1000, 1000),
                         radius: float = 400.0, plot_func: Callable[[np.array], np.array] = None):
     img = Image.new("RGB", size, color=(255, 255, 255))
     row, col = size
@@ -27,8 +28,15 @@ def generate_star_image(path: str, star_data: np.array, size: tuple[int, int] = 
     # get plot size
     pt_size = plot_func(star_data)
 
+    # draw star
     for i in range(len(star_data)):
         x, y, sz = radius * star_data[i][1] + cen_x, radius * star_data[i][2] + cen_y, pt_size[i]
         draw_img.ellipse([x - sz, y - sz, x + sz, y + sz], fill=(0, 0, 0), outline=(0, 0, 0), width=1)
+
+    # draw const line
+    for i in range(len(const_line_data)):
+        x1, y1 = cen_x + radius * const_line_data[i][0], cen_y + radius * const_line_data[i][1]
+        x2, y2 = cen_x + radius * const_line_data[i][3], cen_y + radius * const_line_data[i][4]
+        draw_img.line((x1, y1, x2, y2), fill='red', width=1)
 
     img.save(path)
