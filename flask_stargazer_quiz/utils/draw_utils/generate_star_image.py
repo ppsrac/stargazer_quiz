@@ -1,9 +1,10 @@
 import numpy as np
 from typing import Callable
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 
 def generate_star_image(path: str, star_data: np.array, const_line_data: np.array,
+                        constellation_data: list,
                         size: tuple[int, int] = (1000, 1000),
                         radius: float = 400.0, plot_func: Callable[[np.array], np.array] = None):
     img = Image.new("RGB", size, color=(255, 255, 255))
@@ -38,5 +39,16 @@ def generate_star_image(path: str, star_data: np.array, const_line_data: np.arra
         x1, y1 = cen_x + radius * const_line_data[i][0], cen_y + radius * const_line_data[i][1]
         x2, y2 = cen_x + radius * const_line_data[i][3], cen_y + radius * const_line_data[i][4]
         draw_img.line((x1, y1, x2, y2), fill='red', width=1)
+
+    # font and font size
+    font_size = 15
+    font = ImageFont.truetype("arial.ttf", font_size)
+
+    # draw constellation name
+    for row in constellation_data:
+        draw_img.text(xy=(cen_x + radius * row[0] - font_size / 2.0, cen_y + radius * row[1] - font_size / 2.0),
+                      text=row[3],
+                      fill='blue',
+                      font=font)
 
     img.save(path)

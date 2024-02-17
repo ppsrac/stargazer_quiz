@@ -18,7 +18,7 @@ def get_sidereal_time(longi: float, timeinfo: Optional[tuple] = None) -> float:
     :return: the sidereal time of the desired location at a specific time
     """
     # get datetime from base datetime module or use current time.
-    t = datetime.now() if timeinfo is None else datetime(*timeinfo)
+    t = datetime.utcnow() if timeinfo is None else datetime(*timeinfo)
     # convert datetime to astropy time object
     t_astropy = Time(t)
     jd = t_astropy.jd

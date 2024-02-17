@@ -2,7 +2,7 @@ import numpy as np
 from math import pi
 
 
-def remove_rows_by_criteria(star_data: np.array, alti_deg: float = 10.0, max_mag: float = 5.0):
+def remove_stars_by_criteria(star_data: np.array, alti_deg: float = 10.0, max_mag: float = 5.0) -> np.array:
     """
     filter star data with altiude limit and magnitude limit.
     :param star_data: np array of given star data. Each row contains (id, x, y, z, mag) of single star.
@@ -16,7 +16,7 @@ def remove_rows_by_criteria(star_data: np.array, alti_deg: float = 10.0, max_mag
     return filtered_data
 
 
-def remove_two_rows_by_criteria(const_line_data: np.array, alti_deg: float = 10.0):
+def remove_constlines_by_criteria(const_line_data: np.array, alti_deg: float = 10.0) -> np.array:
     """
     filter star data with altiude limit and magnitude limit.
     :param const_line_data: np array of given star data. Each row contains (x, y, z) of single star.
@@ -30,3 +30,12 @@ def remove_two_rows_by_criteria(const_line_data: np.array, alti_deg: float = 10.
     mask = (const_line_data[:, 2] > alti) & (const_line_data[:, 5] > alti)
     filtered_data = const_line_data[mask]
     return filtered_data
+
+
+def remove_constellations_by_criteria(constellaion_data: np.array, constellation_name_data: list,
+                                      alti_deg: float = 10.0) -> list:
+    alti = np.sin(alti_deg * pi / 180.0)
+    ret = []
+    for idx, row in enumerate(constellaion_data):
+        if row[2] > alti: ret.append([*row, constellation_name_data[idx]])
+    return ret

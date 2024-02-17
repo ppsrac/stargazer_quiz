@@ -63,3 +63,8 @@ def convert_constline(line_data: np.array, location: tuple[float, float] = (37.5
     ret_array = np.transpose(np.array([x, y, z]))
     return ret_array
 
+def convert_constellation(constellation_data:np.array, location: tuple[float, float] = (37.5, 127.0),
+                          time_info: Optional[tuple] = None) -> np.array:
+    x, y, z = spheric2ortho(constellation_data, location, time_info)
+    ret_array = np.transpose(np.array([x, y, z]))
+    return ret_array
